@@ -21,7 +21,17 @@ public class ProductControllerTest {
     @BeforeEach
     void setUp() {
         service = mock(ProductService.class);
-        controller = new ProductController(service);
+        controller = new ProductController();
+
+        try {
+            java.lang.reflect.Field field =
+                    ProductController.class.getDeclaredField("service");
+            field.setAccessible(true);
+            field.set(controller, service);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         model = mock(Model.class);
     }
 
