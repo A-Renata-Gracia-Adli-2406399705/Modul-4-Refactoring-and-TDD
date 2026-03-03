@@ -28,3 +28,79 @@ Penerapan clean code yang saya terapkan adalah meaningful names di mana saya men
    Continuous Deployment juga sudah diterapkan karena setiap perubahan yang berhasil dimerge ke branch main secara otomatis dideploy ke platform PaaS (Koyeb). Lalu, seluruh prses (testing, code coverage checking, code scanning, deployment) berjalan secara otomatis melalui workflow yang terintegrasi yang merupakan cerminan dari CI/CD.
 
 link: sunny-robby-adv-prog-ac3b0cbf.koyeb.app/
+
+
+# Modul 3
+
+1. SOLID principles yang diapply:
+   
+a) Single Responsibility Principle (SRP): sebuah class hanya boleh memiliki satu tanggung jawab atau hanya menangani satu fungsi tertentu.
+      
+Penerapan yang sudah sesuai:
+- Pada model, class Product hanya menyimpan data product dan class Car hanya menyimpan data mobil saja.
+- Pada repository, class ProductRepository hanya menyimpan dan mengambil data product dari storage.
+- Pada service, class productServiceImpl hanya mengatur business logic untuk product dan class CarServiceImpl hanya mengatur business logic untuk car.
+
+Kesalahan:
+- CarController extends ProductController sehingga CarController membawa tanggung jawab ProductController padahal mereka menangani hal yang berbeda (satu untuk product dan satu lagi untuk car)
+- Terdapat variable yang tidak digunakan pada CarRepository yang membuat class CarRepository memiliki elemen yang tidak berhubungan dengan tanggung jawabnya.
+
+Perbaikan:
+- Menghapus inheritance antara CarController dengan ProductController agar CarController tidak lagi mengextend ProductController sehingga setiap controller hanya memiliki satu tanggung jawab.
+- Menghapus variable yang tidak terpakai (static int id = 0;)
+
+
+b) Open Closed Principle (OCP): terbuka untuk menambah tetapi tertutup untuk modifikasi artinya memungkinkan untuk menambah fitur tanpa mengubah kode sebelumnya.
+
+Penerapan yang sudah sesuai: Service menggunakan interface ProductService dan CarService lalu diimplementasikan oleh ProductServiceImpl dan CarServiceImpl. Kemudian, controller menggunakan interface. Jika ingin membuat service baru, controller tidak perlu diubah.
+
+Kesalahan: class CarController extends class ProductController sehingga jika mau menambah controller baru, ProductController harus dimodifikasi.
+
+Perbaikan: Menghapus inheritance antara CarController dengan ProductController agar CarController tidak lagi mengextend ProductController sehingga jika ingin menambah controller baru, tidak perlu mengubah kode lama.
+
+
+c) Liskov Substition Principle (LSP): subclass harus bisa menggantikan superclass tanpa merusak program.
+
+Kesalahan: class CarController extends class ProductController padahal CarController bukan jenis ProductController sehingga jika kita menulis ProductController controller = new CarController(); program bisa error karena service yang dipakai berbeda.
+
+Perbaikan: Menghapus inheritance antara CarController dengan ProductController agar CarController tidak mengextend ProductController.
+
+
+d) Interface Segregation Principle (ISP): interface besar harus dipecah menjadi interface kecil sehingga class hanya menggunakan method yang diperlukan.
+
+Penerapan yang sudah sesuai:
+- Interface ProductService digunakan seluruhnya oleh ProductServiceImpl
+- Interface CarService digunakan seluruhnya oleh CarServiceImpl
+
+
+e) Dependency Inversion Principle (DIP): high-level module tidak boleh bergantun pada low-level module, tetapi harus bergantung pada abstraction.
+
+Penerapan yang sudah sesuai: ProductController bergantung pada interface ProductService, bukan pada ProductServiceImpl.
+
+Kesalahan: CarController bergantung pada implementation yaitu CarServiceImpl
+
+Perbaikan: Mengubah private CarServiceImpl carservice; menjadi private CarService carservice; sehingga CarController bergantung pada abstraction
+
+
+
+2. Keuntungan menerapkan SOLID:
+- Dengan SRP, tiap class memiliki tanggung jawab yang jelas sehingga kode lebih mudah dimaintain.
+   Contoh: Jika ada bug pada CarRepository, cukup fix CarRepository saja tanpa menyentuh yang lain.
+- Dengan OCP, kita bisa tambah fitur tanpa mengubah kode sebelumnya sehingga kode lebih mudah untuk dikembangkan.
+   Contoh: Jika ingin menambah model Bike dengan BikeController, BikeService, dan BikeRepository, tidak perlu mengubah bagian product dan car.
+- Dengan ISP dan juga SRP, tiap class punya fungsi yang jelas sehingga program lebih rapi dan mudah dipahami.
+   Contoh: model untuk data, repository untuk data storage, controller untuk menangani request, service untuk business logic
+- Dengan DIP, kode lebih mudah ditest karena bisa menggunakan mock object di unit test.
+   Contoh: ProductControllerTest menggunakan mock(ProductService.class)
+
+
+
+3. Kerugian jika tidak menerapkan SOLID:
+- Jika tidak menerapkan SRP, jika satu class punya banyak tanggung jawab, maka perubahan kecil bisa menimbulkan bug di bagian lain.
+   Contoh: jika ProductController juga mengatur Car, maka perubahan di Product bisa merusak Car. Selain itu, jika variable tidak terpakai di CarRepository tidak dihapus, kode akan terlihat membingungkan dan sulit dibaca.
+- Jika tidak menerapkan OCP, akan sulit untuk menambah fitur baru.
+   Contoh: jika CarController masih mengextends ProductController, maka setiap perubahan di ProductController bisa merusak CarController
+- Jika tidak menerapkan ISP, interface akan menjadi terlalu besar dan sulit dipahami, serta perubahan kecil bisa berdampak besar, code juga menjadi tidak reusable.
+   Contoh: jika ingin menambah suatu method, maka semua implementasi harus diupdate meskipun tidak membutuhkan fitur tersebut sehingga bisa menimbulkan method kosong
+- Jika tidak menerapkan DIP, kode akan sulit ditest.
+   Contoh: jika CarController menggunakan CarServiceImpl instead of CarService, maka unit test akan sulit untuk dibuat karena tidak bisa menggunakan mock interface.
