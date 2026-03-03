@@ -33,6 +33,7 @@ link: sunny-robby-adv-prog-ac3b0cbf.koyeb.app/
 # Modul 3
 
 1. SOLID principles yang diapply:
+   
 a) Single Responsibility Principle (SRP): sebuah class hanya boleh memiliki satu tanggung jawab atau hanya menangani satu fungsi tertentu.
       
 Penerapan yang sudah sesuai:
