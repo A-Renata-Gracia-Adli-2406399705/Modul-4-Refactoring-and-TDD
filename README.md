@@ -33,7 +33,7 @@ link: sunny-robby-adv-prog-ac3b0cbf.koyeb.app/
 # Modul 3
 
 1. SOLID principles yang diapply:
-1) Single Responsibility Principle (SRP): sebuah class hanya boleh memiliki satu tanggung jawab atau hanya menangani satu fungsi tertentu.
+a) Single Responsibility Principle (SRP): sebuah class hanya boleh memiliki satu tanggung jawab atau hanya menangani satu fungsi tertentu.
       
 Penerapan yang sudah sesuai:
 - Pada model, class Product hanya menyimpan data product dan class Car hanya menyimpan data mobil saja.
@@ -49,7 +49,7 @@ Perbaikan:
 - Menghapus variable yang tidak terpakai (static int id = 0;)
 
 
-2) Open Closed Principle (OCP): terbuka untuk menambah tetapi tertutup untuk modifikasi artinya memungkinkan untuk menambah fitur tanpa mengubah kode sebelumnya.
+b) Open Closed Principle (OCP): terbuka untuk menambah tetapi tertutup untuk modifikasi artinya memungkinkan untuk menambah fitur tanpa mengubah kode sebelumnya.
 
 Penerapan yang sudah sesuai: Service menggunakan interface ProductService dan CarService lalu diimplementasikan oleh ProductServiceImpl dan CarServiceImpl. Kemudian, controller menggunakan interface. Jika ingin membuat service baru, controller tidak perlu diubah.
 
@@ -58,27 +58,28 @@ Kesalahan: class CarController extends class ProductController sehingga jika mau
 Perbaikan: Menghapus inheritance antara CarController dengan ProductController agar CarController tidak lagi mengextend ProductController sehingga jika ingin menambah controller baru, tidak perlu mengubah kode lama.
 
 
-3) Liskov Substition Principle (LSP): subclass harus bisa menggantikan superclass tanpa merusak program.
+c) Liskov Substition Principle (LSP): subclass harus bisa menggantikan superclass tanpa merusak program.
 
 Kesalahan: class CarController extends class ProductController padahal CarController bukan jenis ProductController sehingga jika kita menulis ProductController controller = new CarController(); program bisa error karena service yang dipakai berbeda.
 
 Perbaikan: Menghapus inheritance antara CarController dengan ProductController agar CarController tidak mengextend ProductController.
 
 
-4) Interface Segregation Principle (ISP): interface besar harus dipecah menjadi interface kecil sehingga class hanya menggunakan method yang diperlukan.
+d) Interface Segregation Principle (ISP): interface besar harus dipecah menjadi interface kecil sehingga class hanya menggunakan method yang diperlukan.
 
 Penerapan yang sudah sesuai:
 - Interface ProductService digunakan seluruhnya oleh ProductServiceImpl
 - Interface CarService digunakan seluruhnya oleh CarServiceImpl
 
 
-5) Dependency Inversion Principle (DIP): high-level module tidak boleh bergantun pada low-level module, tetapi harus bergantung pada abstraction.
+e) Dependency Inversion Principle (DIP): high-level module tidak boleh bergantun pada low-level module, tetapi harus bergantung pada abstraction.
 
 Penerapan yang sudah sesuai: ProductController bergantung pada interface ProductService, bukan pada ProductServiceImpl.
 
 Kesalahan: CarController bergantung pada implementation yaitu CarServiceImpl
 
 Perbaikan: Mengubah private CarServiceImpl carservice; menjadi private CarService carservice; sehingga CarController bergantung pada abstraction
+
 
 
 2. Keuntungan menerapkan SOLID:
@@ -90,6 +91,7 @@ Perbaikan: Mengubah private CarServiceImpl carservice; menjadi private CarServic
    Contoh: model untuk data, repository untuk data storage, controller untuk menangani request, service untuk business logic
 - Dengan DIP, kode lebih mudah ditest karena bisa menggunakan mock object di unit test.
    Contoh: ProductControllerTest menggunakan mock(ProductService.class)
+
 
 
 3. Kerugian jika tidak menerapkan SOLID:
