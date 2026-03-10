@@ -117,6 +117,30 @@ class PaymentServiceTest {
     }
 
     @Test
+    void testAddPaymentCODSuccess() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address","Depok");
+        data.put("deliveryFee","10000");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertNotEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentCODRejectedIfAddressEmpty() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address","");
+        data.put("deliveryFee","10000");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
     void testVoucherNull() {
 
         Map<String,String> data = new HashMap<>();
