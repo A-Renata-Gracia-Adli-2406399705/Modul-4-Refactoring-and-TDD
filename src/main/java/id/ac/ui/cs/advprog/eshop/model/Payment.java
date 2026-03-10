@@ -13,10 +13,20 @@ public class Payment {
     private Order order;
 
     public Payment(String id, String method, Order order, Map<String,String> paymentData) {
-
+        this.id = id;
+        this.method = method;
+        this.order = order;
+        this.paymentData = paymentData;
     }
 
     public void setStatus(String status) {
+        if (!status.equals("SUCCESS") &&
+                !status.equals("REJECTED") &&
+                !status.equals("PENDING")) {
 
+            throw new IllegalArgumentException("Invalid payment status");
+        }
+
+        this.status = status;
     }
 }
