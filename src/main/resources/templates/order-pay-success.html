@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Payment Success</title>
+</head>
+<body>
+
+<h2>Payment Created</h2>
+
+<p>Your Payment ID:</p>
+
+<h3 th:text="${paymentId}"></h3>
+
+<a th:href="@{/payment/detail/{id}(id=${paymentId})}">
+  View Payment Detail
+</a>
+
+</body>
+</html>
