@@ -30,6 +30,19 @@ public class PaymentServiceImpl implements PaymentService {
             }
         }
 
+        if(method.equalsIgnoreCase("cod")) {
+
+            String address = paymentData.get("address");
+            String deliveryFee = paymentData.get("deliveryFee");
+
+            if(address == null || address.isEmpty()
+                    || deliveryFee == null || deliveryFee.isEmpty()) {
+
+                payment.setStatus("REJECTED");
+                order.setStatus("FAILED");
+            }
+        }
+
         paymentRepository.save(payment);
         return payment;
     }
