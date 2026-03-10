@@ -141,6 +141,52 @@ class PaymentServiceTest {
     }
 
     @Test
+    void testAddPaymentCODRejectedIfAddressNull() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address", null);
+        data.put("deliveryFee","10000");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentCODRejectedIfDeliveryFeeNull() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address","Depok");
+        data.put("deliveryFee", null);
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentCODRejectedIfDeliveryFeeEmpty() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("address","Depok");
+        data.put("deliveryFee","");
+
+        Payment payment = paymentService.addPayment(order,"COD",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testAddPaymentUnknownMethod() {
+
+        Map<String,String> data = new HashMap<>();
+
+        Payment payment = paymentService.addPayment(order,"TRANSFER",data);
+
+        assertNotNull(payment);
+    }
+
+    @Test
     void testVoucherNull() {
 
         Map<String,String> data = new HashMap<>();
