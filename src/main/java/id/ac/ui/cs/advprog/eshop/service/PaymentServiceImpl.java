@@ -18,8 +18,19 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
         Payment payment = new Payment(UUID.randomUUID().toString(), method, order, paymentData);
 
-        paymentRepository.save(payment);
+        if(method.equalsIgnoreCase("voucher")) {
+            String code = paymentData.get("voucherCode");
 
+            if(isValidVoucher(code)) {
+                payment.setStatus("SUCCESS");
+                order.setStatus("SUCCESS");
+            } else {
+                payment.setStatus("REJECTED");
+                order.setStatus("FAILED");
+            }
+        }
+
+        paymentRepository.save(payment);
         return payment;
     }
 
@@ -48,4 +59,20 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findAll();
     }
 
+    private boolean isValidVoucher(String code) {
+
+        if(code == null) return false;
+
+        if(code.length() != 16) return false;
+
+        if(!code.startsWith("ESHOP")) return false;
+
+        int digitCount = 0;
+
+        for(char c : code.toCharArray()) {
+            if(Character.isDigit(c)) digitCount++;
+        }
+
+        return digitCount >= 8;
+    }
 }
