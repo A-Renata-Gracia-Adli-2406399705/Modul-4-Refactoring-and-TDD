@@ -92,4 +92,72 @@ class PaymentServiceTest {
         assertEquals(1, result.size());
     }
 
+    @Test
+    void testAddPaymentVoucherSuccess() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("voucherCode","ESHOP1234ABC5678");
+
+        Payment payment = paymentService.addPayment(order,"VOUCHER",data);
+
+        assertEquals("SUCCESS", payment.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
+    }
+
+    @Test
+    void testAddPaymentVoucherRejected() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("voucherCode","INVALID");
+
+        Payment payment = paymentService.addPayment(order,"VOUCHER",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), order.getStatus());
+    }
+
+    @Test
+    void testVoucherNull() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("voucherCode", null);
+
+        Payment payment = paymentService.addPayment(order,"VOUCHER",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testVoucherLengthInvalid() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("voucherCode","ESHOP123");
+
+        Payment payment = paymentService.addPayment(order,"VOUCHER",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testVoucherWrongPrefix() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("voucherCode","ABCDEF1234567890");
+
+        Payment payment = paymentService.addPayment(order,"VOUCHER",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
+    @Test
+    void testVoucherDigitLessThanEight() {
+
+        Map<String,String> data = new HashMap<>();
+        data.put("voucherCode","ESHOPABCDEFGH123");
+
+        Payment payment = paymentService.addPayment(order,"VOUCHER",data);
+
+        assertEquals("REJECTED", payment.getStatus());
+    }
+
 }
