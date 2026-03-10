@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.functional;
 
+import id.ac.ui.cs.advprog.eshop.controller.PaymentController;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Product;
