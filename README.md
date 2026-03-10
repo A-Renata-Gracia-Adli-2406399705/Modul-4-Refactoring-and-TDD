@@ -104,3 +104,21 @@ Perbaikan: Mengubah private CarServiceImpl carservice; menjadi private CarServic
    Contoh: jika ingin menambah suatu method, maka semua implementasi harus diupdate meskipun tidak membutuhkan fitur tersebut sehingga bisa menimbulkan method kosong
 - Jika tidak menerapkan DIP, kode akan sulit ditest.
    Contoh: jika CarController menggunakan CarServiceImpl instead of CarService, maka unit test akan sulit untuk dibuat karena tidak bisa menggunakan mock interface.
+
+# Modul 4
+
+1. Menurut saya, alur Test-Driven Development (TDD) cukup membantu saat mengembangkan program. Dengan menulis test terlebih dahulu, saya jadi lebih jelas tentang perilaku yang diharapkan dari fungsi yang akan dibuat. Hal ini juga membantu saya memastikan bahwa kode yang saya tulis memang sesuai dengan kebutuhan yang sudah diuji melalui test.
+Namun, test yang saya buat masih bisa ditingkatkan dengan:
+- Menambahkan lebih banyak variasi test, terutama untuk edge case atau input yang tidak valid. 
+- Memastikan setiap test benar-benar menguji satu perilaku tertentu dari kode.
+- Lebih memikirkan skenario penggunaan yang mungkin terjadi sebelum menulis implementasi.
+
+
+2. Sebagian besar test yang saya buat sudah cukup mengikuti prinsip F.I.R.S.T.:
+- Fast: test berjalan cepat karena hanya menguji unit kecil dari program.
+- Independent: setiap test tidak bergantung pada test lain.
+- Repeatable: test bisa dijalankan berkali-kali dengan hasil yang sama.
+- Self-validating: hasil test langsung terlihat dari assertion yang digunakan.
+- Timely: pada beberapa bagian test dibuat sebelum implementasi kode.
+
+Namun, kedepannya saya ingin memastikan lagi bahwa setiap test lebih fokus pada satu fungsi atau perilaku tertentu agar test lebih jelas dan mudah dipahami.
